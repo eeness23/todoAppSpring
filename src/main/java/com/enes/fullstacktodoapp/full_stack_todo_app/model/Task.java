@@ -14,11 +14,11 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Task name is requried")
-    private String projectName;
+    private String taskName;
     @NotBlank(message = "Task Identifier name is requried")
     @Size(min = 3,max = 5, message = "Please use 3 to 5 characters")
     @Column(updatable = false,unique = true)
-    private String projectIdentifier;
+    private String taskIdentifier;
     @NotBlank(message = "Description is requried")
     private String desc;
     @JsonFormat(pattern = "yyyy-mm-dd")
@@ -41,12 +41,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     public String getDesc() {
@@ -89,24 +89,24 @@ public class Task {
         this.updated_at = updated_at;
     }
 
-    public String getProjectIdentifier() {
-        return projectIdentifier;
+    public String getTaskIdentifier() {
+        return taskIdentifier;
     }
 
-    public void setProjectIdentifier(String projectIdentifier) {
-        this.projectIdentifier = projectIdentifier;
+    public void setTaskIdentifier(String taskIdentifier) {
+        this.taskIdentifier = taskIdentifier;
     }
 
     @PrePersist
     protected void onCreate(){
         this.create_at=new Date();
-        this.projectIdentifier=this.projectIdentifier.toUpperCase();
+        this.taskIdentifier=this.taskIdentifier.toUpperCase();
     }
 
     @PreUpdate
     protected void onUpdate(){
         this.updated_at=new Date();
-        this.projectIdentifier=this.projectIdentifier.toUpperCase();
+        this.taskIdentifier=this.taskIdentifier.toUpperCase();
     }
 
 }
