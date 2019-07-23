@@ -8,14 +8,14 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
-public class Project {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Project name is requried")
+    @NotBlank(message = "Task name is requried")
     private String projectName;
-    @NotBlank(message = "Project Identifier name is requried")
+    @NotBlank(message = "Task Identifier name is requried")
     @Size(min = 3,max = 5, message = "Please use 3 to 5 characters")
     @Column(updatable = false,unique = true)
     private String projectIdentifier;
@@ -30,7 +30,7 @@ public class Project {
     @JsonFormat(pattern = "yyyy-mm-dd")
     private Date updated_at;
 
-    public Project() {
+    public Task() {
     }
 
     public Long getId() {
@@ -100,11 +100,13 @@ public class Project {
     @PrePersist
     protected void onCreate(){
         this.create_at=new Date();
+        this.projectIdentifier=this.projectIdentifier.toUpperCase();
     }
 
     @PreUpdate
     protected void onUpdate(){
         this.updated_at=new Date();
+        this.projectIdentifier=this.projectIdentifier.toUpperCase();
     }
 
 }
