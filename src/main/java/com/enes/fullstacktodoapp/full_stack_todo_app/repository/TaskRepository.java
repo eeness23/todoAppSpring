@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface TaskRepository  extends JpaRepository<Task,Long> {
-    Optional<Task> findByProjectIdentifier(String s);
-    void deleteByProjectIdentifier(String s);
+    Optional<Task> findByTaskIdentifier(String s);
+    void deleteByTaskIdentifier(String s);
 }

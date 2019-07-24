@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/tasks")
+@CrossOrigin
 public class TaskController {
 
     @Autowired
@@ -40,7 +43,7 @@ public class TaskController {
 
     @GetMapping("/{taskIdentifier}")
     public ResponseEntity<?> getTask(@PathVariable String taskIdentifier){
-        Optional<Task> task = taskService.findByProjectIdentifier(taskIdentifier);
+        Optional<Task> task = taskService.findByTaskIdentifier(taskIdentifier);
         return new ResponseEntity<>(task.get(),HttpStatus.ACCEPTED);
     }
 
@@ -51,7 +54,7 @@ public class TaskController {
 
     @DeleteMapping("/{taskIdentifier}")
     public ResponseEntity<String> deleteTask(@PathVariable String taskIdentifier){
-        taskService.deleteByProjectIdentifier(taskIdentifier);
+        taskService.deleteByTaskIdentifier(taskIdentifier);
         return new ResponseEntity<String>("Task Id : "+taskIdentifier+" not found",HttpStatus.OK);
     }
 }

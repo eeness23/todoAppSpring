@@ -21,16 +21,22 @@ public class Task {
     private String taskIdentifier;
     @NotBlank(message = "Description is requried")
     private String desc;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date start_date;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date end_date;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date create_at;
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date updated_at;
 
     public Task() {
+    }
+
+    public Task(@NotBlank(message = "Task name is requried") String taskName, @NotBlank(message = "Task Identifier name is requried") @Size(min = 3, max = 5, message = "Please use 3 to 5 characters") String taskIdentifier, @NotBlank(message = "Description is requried") String desc) {
+        this.taskName = taskName;
+        this.taskIdentifier = taskIdentifier;
+        this.desc = desc;
     }
 
     public Long getId() {
