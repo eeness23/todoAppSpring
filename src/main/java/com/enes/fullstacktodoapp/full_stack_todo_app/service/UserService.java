@@ -21,7 +21,7 @@ public class UserService {
     public User register(User user) {
         try {
             user.setPassword(encoder.encode(user.getPassword()));
-            user.setUsername(user.getUsername());
+
             return userRepository.save(user);
 
         } catch (Exception e) {
