@@ -1,7 +1,9 @@
 package com.enes.fullstacktodoapp.full_stack_todo_app;
 
 import com.enes.fullstacktodoapp.full_stack_todo_app.model.Task;
+import com.enes.fullstacktodoapp.full_stack_todo_app.model.User;
 import com.enes.fullstacktodoapp.full_stack_todo_app.service.TaskService;
+import com.enes.fullstacktodoapp.full_stack_todo_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,9 @@ public class DatabaseLoader implements CommandLineRunner {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -33,6 +38,12 @@ public class DatabaseLoader implements CommandLineRunner {
         taskService.saveOrUpdate(task7);
         taskService.saveOrUpdate(task8);
         taskService.saveOrUpdate(task9);
+
+        User user = new User();
+        user.setPassword("enes23");
+        user.setUsername("enes@gmail.com");
+        user.setFullName("enes demirbaş");
+        userService.register(user);
 
 
     }
