@@ -13,17 +13,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.beans.Beans;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.enes.fullstacktodoapp.full_stack_todo_app.Security.SecurityConstants.H2_URL;
 import static com.enes.fullstacktodoapp.full_stack_todo_app.Security.SecurityConstants.SING_UP_AND_LOGIN_URL;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(jsr250Enabled = true,prePostEnabled = true,securedEnabled = true)
+@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -37,13 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(userDetailService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(userDetailService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
+    }
+
+    @Bean
+    public JwtFilter jwtFilter() {
+        return new JwtFilter();
     }
 
     @Override
@@ -56,13 +59,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/",
-                            "/**/*.js",
-                            "/**/*.css"
-                    ).permitAll()
+                .antMatchers("/",
+                        "/**/*.js",
+                        "/**/*.css"
+                ).permitAll()
                 .antMatchers(SING_UP_AND_LOGIN_URL).permitAll()
                 .antMatchers(H2_URL).permitAll()
                 .anyRequest().authenticated();
 
+        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -55,7 +55,7 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = TOKEN_PREFIX +  jwtFunctions.generateToken(authentication);
 
-        return ResponseEntity.ok(new JwtTokenResponse(true,token));
+         return ResponseEntity.ok(new JwtTokenResponse(true,token));
     }
 
     @PostMapping("/register")

@@ -1,8 +1,7 @@
 package com.enes.fullstacktodoapp.full_stack_todo_app.Security;
 
 import com.enes.fullstacktodoapp.full_stack_todo_app.model.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -38,4 +37,26 @@ public class JwtFunctions {
                 .signWith(SignatureAlgorithm.HS512,SECRET_KEY)
                 .compact();
     }
+
+    public Long getIdFromToken(String token){
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.get("id").toString());
+    }
+
+    public boolean checkTokenValid(String token){
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        }catch (SignatureException e){
+            System.out.println("Signature Exception");
+        }catch (MalformedJwtException e){
+            System.out.println("Token Exception");
+        }catch (ExpiredJwtException e){
+            System.out.println("Expired Token Exception");
+        }catch (UnsupportedJwtException e){
+            System.out.println("Unsupported Exception");
+        }
+        return false;
+    }
+
 }
