@@ -29,7 +29,7 @@ public class TaskController {
 
 
     @PostMapping("")
-    public ResponseEntity<?> createTase(@Valid @RequestBody Task task, BindingResult bindingResult){
+    public ResponseEntity<?> createTask(@Valid @RequestBody Task task, BindingResult bindingResult){
 
          ResponseEntity<?> errors = mapValidationService.mapValidationService(bindingResult);
          if(errors!=null){
