@@ -3,6 +3,7 @@ package com.enes.fullstacktodoapp.full_stack_todo_app.controller;
 import com.enes.fullstacktodoapp.full_stack_todo_app.model.User;
 import com.enes.fullstacktodoapp.full_stack_todo_app.service.MapValidationService;
 import com.enes.fullstacktodoapp.full_stack_todo_app.service.UserService;
+import com.enes.fullstacktodoapp.full_stack_todo_app.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserValidator userValidator;
 
     @Autowired
     private MapValidationService mapValidationService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult bindingResult){
+
+        if(user.getPassword()!=null){
+            userValidator.validate(user,bindingResult);
+        }
+
         ResponseEntity<?> errorMap = mapValidationService.mapValidationService(bindingResult);
         if(errorMap!=null) return errorMap;
 
