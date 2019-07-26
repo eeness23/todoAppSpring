@@ -16,8 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.enes.fullstacktodoapp.full_stack_todo_app.Security.SecurityConstants.H2_URL;
-import static com.enes.fullstacktodoapp.full_stack_todo_app.Security.SecurityConstants.SING_UP_AND_LOGIN_URL;
+import static com.enes.fullstacktodoapp.full_stack_todo_app.Security.SecurityConstants.*;
 
 @Configuration
 @EnableWebSecurity
@@ -65,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers(SING_UP_AND_LOGIN_URL).permitAll()
                 .antMatchers(H2_URL).permitAll()
+               // .antMatchers(HttpMethod.GET,ALL_TASKS_URL).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);

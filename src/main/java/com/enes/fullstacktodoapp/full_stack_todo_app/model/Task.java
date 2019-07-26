@@ -1,11 +1,14 @@
 package com.enes.fullstacktodoapp.full_stack_todo_app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 public class Task {
@@ -29,6 +32,16 @@ public class Task {
     private Date create_at;
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date updated_at;
+    private boolean completed;
+
+    @OneToMany(mappedBy="parent",cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JsonManagedReference
+    private List<Task> subTasks;
+
+    @ManyToOne
+    @JoinColumn()
+    @JsonBackReference
+    private Task parent;
 
     public Task() {
     }
@@ -38,6 +51,20 @@ public class Task {
         this.taskIdentifier = taskIdentifier;
         this.desc = desc;
     }
+
+    @PrePersist
+    protected void onCreate(){
+        this.create_at=new Date();
+        this.taskIdentifier=this.taskIdentifier.toUpperCase();
+        this.completed=false;
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.updated_at=new Date();
+        this.taskIdentifier=this.taskIdentifier.toUpperCase();
+    }
+
 
     public Long getId() {
         return id;
@@ -53,6 +80,14 @@ public class Task {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public String getTaskIdentifier() {
+        return taskIdentifier;
+    }
+
+    public void setTaskIdentifier(String taskIdentifier) {
+        this.taskIdentifier = taskIdentifier;
     }
 
     public String getDesc() {
@@ -95,24 +130,27 @@ public class Task {
         this.updated_at = updated_at;
     }
 
-    public String getTaskIdentifier() {
-        return taskIdentifier;
+    public boolean isCompleted() {
+        return completed;
     }
 
-    public void setTaskIdentifier(String taskIdentifier) {
-        this.taskIdentifier = taskIdentifier;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
-    @PrePersist
-    protected void onCreate(){
-        this.create_at=new Date();
-        this.taskIdentifier=this.taskIdentifier.toUpperCase();
+    public List<Task> getSubTasks() {
+        return subTasks;
     }
 
-    @PreUpdate
-    protected void onUpdate(){
-        this.updated_at=new Date();
-        this.taskIdentifier=this.taskIdentifier.toUpperCase();
+    public void setSubTasks(List<Task> subTasks) {
+        this.subTasks = subTasks;
     }
 
+    public Task getParent() {
+        return parent;
+    }
+
+    public void setParent(Task parent) {
+        this.parent = parent;
+    }
 }

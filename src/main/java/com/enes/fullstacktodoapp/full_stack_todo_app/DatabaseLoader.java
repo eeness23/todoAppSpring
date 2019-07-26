@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
@@ -29,11 +32,15 @@ public class DatabaseLoader implements CommandLineRunner {
         Task task7 = new Task("deneme task 7","task7","description tas 3");
         Task task8 = new Task("deneme task 8","task8","description tak 4");
         Task task9 = new Task("deneme task 9","task9","description tsk 1");
+
+        task2.setParent(task1);
+        task3.setParent(task1);
         taskService.saveOrUpdate(task1);
         taskService.saveOrUpdate(task2);
         taskService.saveOrUpdate(task3);
         taskService.saveOrUpdate(task4);
         taskService.saveOrUpdate(task5);
+        task6.setParent(task5);
         taskService.saveOrUpdate(task6);
         taskService.saveOrUpdate(task7);
         taskService.saveOrUpdate(task8);

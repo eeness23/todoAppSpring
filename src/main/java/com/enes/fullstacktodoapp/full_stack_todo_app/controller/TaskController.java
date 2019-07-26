@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -56,5 +58,11 @@ public class TaskController {
     public ResponseEntity<String> deleteTask(@PathVariable String taskIdentifier){
         taskService.deleteByTaskIdentifier(taskIdentifier);
         return new ResponseEntity<String>("Task Id : "+taskIdentifier+" not found",HttpStatus.OK);
+    }
+
+    @GetMapping("/empties")
+    public ResponseEntity<?> getAllEmpties(){
+        List<Task> tasks = taskService.getAllByParentIsNull();
+        return new ResponseEntity<List<Task>>(tasks,HttpStatus.ACCEPTED);
     }
 }
