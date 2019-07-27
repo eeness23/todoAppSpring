@@ -25,12 +25,12 @@ public class DatabaseLoader implements CommandLineRunner {
 
         Task task1 = new Task("deneme task 1","task1","description task 1");
         Task task2 = new Task("deneme task 2","task2","description task 2");
-        Task task3 = new Task("deneme task 3","task3","description task 3");
+        Task task3 = new Task("deneme task 3","abc","description task 3");
         Task task4 = new Task("deneme task 4","task4","description task 4");
-        Task task5 = new Task("deneme task 5","task5","description task4");
+        Task task5 = new Task("a1deneme task 5","task5","description task4");
         Task task6 = new Task("deneme task 6","task6","description task2");
-        Task task7 = new Task("deneme task 7","task7","description tas 3");
-        Task task8 = new Task("deneme task 8","task8","description tak 4");
+        Task task7 = new Task("deneme task 7","bac","description tas 3");
+        Task task8 = new Task("zdeneme task 8","zac","description tak 4");
         Task task9 = new Task("deneme task 9","task9","description tsk 1");
 
         task2.setParent(task1);
