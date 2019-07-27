@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tasks")
@@ -46,6 +44,11 @@ public class TaskController {
     @GetMapping("/{taskIdentifier}")
     public ResponseEntity<?> getTask(@PathVariable String taskIdentifier){
         Optional<Task> task = taskService.findByTaskIdentifier(taskIdentifier);
+        System.out.println(task.get().getSubTasks().size());
+        for(Task task2 : task.get().getSubTasks()){
+            System.out.println(task2.getSubTasks().size());
+            System.out.println(task2.getParent().getTaskIdentifier());
+        }
         return new ResponseEntity<>(task.get(),HttpStatus.ACCEPTED);
     }
 
@@ -63,6 +66,9 @@ public class TaskController {
     @GetMapping("/empties")
     public ResponseEntity<?> getAllEmpties(){
         List<Task> tasks = taskService.getAllByParentIsNull();
+
+        tasks = tasks.stream().peek(p-> p.setLabel(p.getTaskIdentifier())).collect(Collectors.toList());
+
         return new ResponseEntity<List<Task>>(tasks,HttpStatus.ACCEPTED);
     }
 }

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class TaskService {
 
     @Autowired
@@ -24,8 +24,19 @@ public class TaskService {
             checkDependencies(task);
         }
         try {
-            return taskRepository.save(task);
+            if(task.getSubTasks().size()>0){
+                taskRepository.save(task);
+                for(Task subTask : task.getSubTasks()){
+                    subTask.setParent(task);
+                    taskRepository.save(subTask);
+                }
+                return task;
+            }else{
+                return taskRepository.save(task);
+            }
+
         }catch (Exception e){
+            System.out.println(e);
             throw new TaskExection("Task Id :"+task.getTaskIdentifier()+" already exists");
         }
     }
@@ -70,6 +81,11 @@ public class TaskService {
 
         if(!task.isPresent()){
             throw new TaskExection("Task Id :"+taskIdentifier+" doesnt found");
+        }
+        if(task.get().getSubTasks().size()>0){
+            for(Task subTask : task.get().getSubTasks()){
+                subTask.setParent(null);
+            }
         }
         taskRepository.deleteByTaskIdentifier(taskIdentifier);
 

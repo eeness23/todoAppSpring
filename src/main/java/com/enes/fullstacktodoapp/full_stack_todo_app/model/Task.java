@@ -34,14 +34,18 @@ public class Task {
     private Date updated_at;
     private boolean completed;
 
-    @OneToMany(mappedBy="parent",cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="parent",fetch=FetchType.EAGER)
     @JsonManagedReference
-    private List<Task> subTasks;
+    private List<Task> subTasks=new ArrayList<>();
 
     @ManyToOne
     @JoinColumn()
     @JsonBackReference
     private Task parent;
+
+    // For multiselect component - reactJS
+    @Transient
+    public String label;
 
     public Task() {
     }
@@ -152,5 +156,13 @@ public class Task {
 
     public void setParent(Task parent) {
         this.parent = parent;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }
