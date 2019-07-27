@@ -63,12 +63,25 @@ public class Task {
         this.completed=false;
     }
 
-    @PreUpdate
+/*    @PreUpdate
     protected void onUpdate(){
         this.updated_at=new Date();
         this.taskIdentifier=this.taskIdentifier.toUpperCase();
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) &&
+                Objects.equals(taskIdentifier, task.taskIdentifier);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, taskIdentifier);
+    }
 
     public Long getId() {
         return id;

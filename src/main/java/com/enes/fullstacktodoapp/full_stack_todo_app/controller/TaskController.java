@@ -44,11 +44,6 @@ public class TaskController {
     @GetMapping("/{taskIdentifier}")
     public ResponseEntity<?> getTask(@PathVariable String taskIdentifier){
         Optional<Task> task = taskService.findByTaskIdentifier(taskIdentifier);
-        System.out.println(task.get().getSubTasks().size());
-        for(Task task2 : task.get().getSubTasks()){
-            System.out.println(task2.getSubTasks().size());
-            System.out.println(task2.getParent().getTaskIdentifier());
-        }
         return new ResponseEntity<>(task.get(),HttpStatus.ACCEPTED);
     }
 
@@ -66,9 +61,14 @@ public class TaskController {
     @GetMapping("/empties")
     public ResponseEntity<?> getAllEmpties(){
         List<Task> tasks = taskService.getAllByParentIsNull();
-
         tasks = tasks.stream().peek(p-> p.setLabel(p.getTaskIdentifier())).collect(Collectors.toList());
+        return new ResponseEntity<List<Task>>(tasks,HttpStatus.ACCEPTED);
+    }
 
+    @GetMapping("/emptiesOrSelf/{taskIdentifier}")
+    public ResponseEntity<?> getTasksParentIsNullOrParentIsNotSelf(@PathVariable String taskIdentifier){
+        List<Task> tasks = taskService.getTasksParentIsNullOrParentIsSelf(taskIdentifier.toUpperCase());
+        tasks = tasks.stream().peek(p-> p.setLabel(p.getTaskIdentifier())).collect(Collectors.toList());
         return new ResponseEntity<List<Task>>(tasks,HttpStatus.ACCEPTED);
     }
 }
